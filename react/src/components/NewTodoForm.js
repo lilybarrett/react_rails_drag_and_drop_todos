@@ -6,8 +6,8 @@ const NewTodoForm = (props) => {
       <div className="small-6 small-centered columns text-center">
         <form onSubmit={props.addItem}>
           <div className="fields">
-            <input type="text" placeholder="Todo Title" value={props.name} />
-            <input type="text" placeholder="Todo Description" value={props.description} />
+            <input type="text" placeholder="Todo Title" onBlur={props.setNewName}/>
+            <input type="text" placeholder="Todo Description" onBlur={props.setNewDescription}/>
             <div>
                <button type="submit" className="medium button">Add</button>
             </div>

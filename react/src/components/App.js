@@ -7,15 +7,20 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      todos: []
+      todos: [],
+      newTodoName: "",
+      newTodoDescription: ""
     }
 
     this.onDrop = this.onDrop.bind(this);
     this.removeTodoFromClient = this.removeTodoFromClient.bind(this);
+    this.setNewName = this.setNewName.bind(this);
+    this.setNewDescription = this.setNewDescription.bind(this);
     this.addItem = this.addItem.bind(this);
   }
 
   onDrop(data) {
+    debugger;
     console.log(data);
     let idFromData = parseInt(data.todo);
     fetch(`http://localhost:3000/api/v1/todos/${idFromData}`, {
@@ -36,11 +41,48 @@ class App extends Component {
     console.log("successfully removed todo from client");
   };
 
-  addItem(){
-    debugger;
-    // let name = this.refs.name.value;
-    // let description = this.refs.description.value;
-    // console.log('The name value is ' + name + 'the description value is ' + description);
+  setNewName(event) {
+    let newName = event.target.value;
+    this.setState({ newTodoName: newName })
+  }
+
+  setNewDescription(event) {
+    let newDescription = event.target.value;
+    this.setState({ newTodoDescription: newDescription })
+  }
+
+  addItem(event){
+    event.preventDefault();
+    let data = {
+      'todo': {
+        'name': this.state.newTodoName,
+        'description': this.state.newTodoDescription
+      }
+    }
+
+    fetch('http://localhost:3000/api/v1/todos.json', {
+      method: 'POST',
+      data: data
+    })
+    .then(response => {
+      if (response.ok) {
+        return response;
+      } else {
+        let errorMessage = `${response.status} (${response.statusText})`,
+          error = new Error(errorMessage);
+        throw(error);
+      }
+    })
+    .then(response => response.json())
+    .then(body => {
+      let newTodos = [...this.state.todos, data.todo]
+      this.setState({
+        todos: newTodos,
+        newTodoName: "",
+        newTodoDescription: ""
+      })
+    })
+    .catch(error => console.error(`Error in fetch: ${error.message}`));
   }
 
   componentDidMount() {
@@ -63,7 +105,9 @@ class App extends Component {
 
   render() {
     let onDrop = (data) => this.onDrop(data);
-    let addItem = () => this.addItem();
+    let setNewName = (event) => this.setNewName(event);
+    let setNewDescription = (event) => this.setNewDescription(event);
+    let addItem = (event) => this.addItem(event);
     return(
       <div>
         <div>
@@ -86,6 +130,10 @@ class App extends Component {
           <div>
             <NewTodoForm
               addItem={addItem}
+              setNewName={setNewName}
+              setNewDescription={setNewDescription}
+              name={this.state.newTodoName}
+              description={this.state.newTodoDescription}
             />
           </div>
         </div>

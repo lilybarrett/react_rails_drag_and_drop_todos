@@ -11,15 +11,9 @@ class Api::V1::TodosController < Api::V1::BaseController
     respond_with Todo.destroy(params[:id])
   end
 
-  def update
-    todo = Todo.find(params["id"])
-    todo.update_attributes(todo_params)
-    respond_with todo, json: todo
-  end
-
   private
 
   def todo_params
-    params.require(:todo).permit(:id, :name, :description)
+    params.permit(:id, :name, :description)
   end
 end
