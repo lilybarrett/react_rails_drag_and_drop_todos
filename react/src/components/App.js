@@ -20,7 +20,6 @@ class App extends Component {
   }
 
   onDrop(data) {
-    debugger;
     console.log(data);
     let idFromData = parseInt(data.todo);
     fetch(`http://localhost:3000/api/v1/todos/${idFromData}`, {
@@ -53,16 +52,13 @@ class App extends Component {
 
   addItem(event){
     event.preventDefault();
-    let data = {
-      'todo': {
-        'name': this.state.newTodoName,
-        'description': this.state.newTodoDescription
-      }
-    }
+    let oldState = this.state;
+    let data = { todo: { name: this.state.newTodoName, description: this.state.newTodoDescription } }
+    let jsonStringData = JSON.stringify(data);
 
     fetch('http://localhost:3000/api/v1/todos.json', {
       method: 'POST',
-      data: data
+      data: jsonStringData
     })
     .then(response => {
       if (response.ok) {
@@ -73,9 +69,8 @@ class App extends Component {
         throw(error);
       }
     })
-    .then(response => response.json())
     .then(body => {
-      let newTodos = [...this.state.todos, data.todo]
+      let newTodos = oldState.todos.concat(data.todo);
       this.setState({
         todos: newTodos,
         newTodoName: "",

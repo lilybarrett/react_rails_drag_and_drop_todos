@@ -10,7 +10,6 @@ const TodoList = (props) => {
       <Draggable type="todo" data={id} key={id}>
         <Todo
           key={id}
-          id={id}
           name={name}
           description={description}
         />
