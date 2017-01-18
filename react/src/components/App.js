@@ -57,12 +57,14 @@ class App extends Component {
     let jsonStringData = JSON.stringify(data);
 
     fetch('http://localhost:3000/api/v1/todos.json', {
+      credentials: 'same-origin',
       method: 'POST',
-      data: jsonStringData
+      headers: { 'Content-Type': 'application/json' },
+      body: jsonStringData
     })
     .then(response => {
       if (response.ok) {
-        return response;
+        return response.json();
       } else {
         let errorMessage = `${response.status} (${response.statusText})`,
           error = new Error(errorMessage);
@@ -70,7 +72,7 @@ class App extends Component {
       }
     })
     .then(body => {
-      let newTodos = oldState.todos.concat(data.todo);
+      let newTodos = oldState.todos.concat(body);
       this.setState({
         todos: newTodos,
         newTodoName: "",

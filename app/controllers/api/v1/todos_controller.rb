@@ -1,10 +1,12 @@
 class Api::V1::TodosController < Api::V1::BaseController
+
   def index
     respond_with Todo.all
   end
 
   def create
-    respond_with :api, :v1, Todo.create(todo_params)
+    todo = Todo.create(todo_params)
+    render json: { name: todo.name, id: todo.id, description: todo.description }.to_json
   end
 
   def destroy
@@ -14,6 +16,6 @@ class Api::V1::TodosController < Api::V1::BaseController
   private
 
   def todo_params
-    params.permit(:name, :description)
+    params.require(:todo).permit(:id, :name, :description)
   end
 end
