@@ -54,9 +54,6 @@ GEM
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       xpath (~> 2.0)
-    capybara-webkit (1.11.0)
-      capybara (>= 2.3.0, < 2.8.0)
-      json
     coderay (1.1.1)
     coffee-rails (4.1.1)
       coffee-script (>= 2.2.0)
@@ -258,7 +255,6 @@ PLATFORMS
 DEPENDENCIES
   active_model_serializers
   capybara
-  capybara-webkit
   coffee-rails (~> 4.1.0)
   coveralls
   database_cleaner
@@ -286,4 +282,4 @@ DEPENDENCIES
   webmock
 
 BUNDLED WITH
-   1.13.2
+   1.13.6
