@@ -1,4 +1,4 @@
-class Api::V1::TodosController < Api::V1::BaseController
+class Api::V1::TodosController < ApplicationController
 
   def index
     respond_with Todo.all
